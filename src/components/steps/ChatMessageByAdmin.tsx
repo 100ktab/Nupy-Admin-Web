@@ -4,8 +4,8 @@ import {ReactNode} from "react";
 type ChatMessageByAdminProps = {
   text: string;
   withImage?: boolean;
-  children: ReactNode;
-  childrenInBubble: ReactNode;
+  children?: ReactNode;
+  childrenInBubble?: ReactNode;
 }
 
 const ChatMessageByAdmin = ({text, children, childrenInBubble, withImage = true} : ChatMessageByAdminProps) => {

@@ -47,7 +47,7 @@ Example: ${params.description}`
     return NextResponse.json({
       result: images
     });
-  } catch(error) {
+  } catch(error: any) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
       console.error(error.response.status, error.response.data);
@@ -55,7 +55,7 @@ Example: ${params.description}`
       console.log('test')
       console.error(`Error with OpenAI API request: ${error.message}`);
     }
-    return NextResponse.json({ error: 'error' }, { status: 500 })
+    return NextResponse.json({ error: 'error' , status: 500 })
   }
 }
 

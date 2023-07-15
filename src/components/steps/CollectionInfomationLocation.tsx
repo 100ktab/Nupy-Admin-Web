@@ -45,32 +45,33 @@ const CollectionInformationAddress = () => {
 
   useEffect(() => {
     if (mapRef.current) {
+      // @ts-ignore
       mapRef.current?.flyTo({center: center})
     }
 
   }, [])
 
-  const onClick = (value) => {
+  const onClick = (value: number) => {
     if (createNFT.getRange()) {
       return
     }
-    setRange(value)
-    if (value < 1) {
+    const selectedRange = value
+    setRange(selectedRange)
+    if (selectedRange < 1) {
       setViewState((prev) => ({
         ...prev,
         zoom: 15
       }))
     }
-    createNFT.setEventTemplate(value)
     createNFT.addChat({
       template: MessageTemplateType.DEFAULT,
-      text: ranges.filter(item => item.type === value)[0].title
+      text: ranges.filter(item => item.type === selectedRange)[0].title
     })
     createNFT.addChat({
       template: MessageTemplateType.NFT_TITLE,
       text: ''
     })
-    createNFT.setRange(value)
+    createNFT.setRange(selectedRange)
     createNFT.setCurrentTemplate(MessageTemplateType.NFT_TITLE)
     createNFT.nextStep()
   }
@@ -115,12 +116,12 @@ const CollectionInformationAddress = () => {
       <div className={'gap-2 flex'}>
         {
           ranges.map((item, index) => {
-            const selectedEventTemplate = createNFT.getSelectedEventTemplate()
+            const range = createNFT.getRange()
             return <Tag
               key={index}
               text={item.title}
               onClick={() => {onClick(item.type)}}
-              selected={selectedEventTemplate === item.type}
+              selected={range === item.type}
               value={item.type}
             />
           })

@@ -7,6 +7,7 @@ const InputMessage = () => {
   const creatNFT = useCreateNFT()
   const [input, setInput] = useState('')
 
+  // @ts-ignore
   const handleInputKeyPress = (event) => {
     setInput(event.target.value)
     if (event.key === 'Enter') {

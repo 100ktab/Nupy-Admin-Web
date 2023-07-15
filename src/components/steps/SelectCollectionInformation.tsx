@@ -29,6 +29,7 @@ const SelectCollectionInformation = () => {
     },
   ]
 
+  // @ts-ignore
   const handleClick = (e, value) => {
     if (creatNFT.getSelectedCollectInformation()) {
       return

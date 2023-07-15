@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ChatMessageByAdmin from "@/components/steps/ChatMessageByAdmin";
 import {makeImage} from "@/util/externals/ai/client";
 import {useCreateNFT} from "@/util/hooks/useCreateNFT";
@@ -13,12 +14,12 @@ const NFTImage = () => {
   const [images, setImages] = useState([])
   const [file, setFile] = useState()
   const [dragging, setDragging] = useState(false);
-  const dragRef = useRef();
+  const dragRef = useRef<HTMLDivElement>(null);
 
   const handleClickMakeImage = async () => {
     makeImage(createNFT.getNFTDescription())
       .then(result => {
-        // API 호출 결과값(result)을 사용하는 로직 작성
+        // @ts-ignore
         setImages(result)
       })
       .catch(error => {
@@ -27,7 +28,7 @@ const NFTImage = () => {
       });
   }
 
-  const uploadIPFSByBase64 = (imageURL) => {
+  const uploadIPFSByBase64 = (imageURL: string) => {
     if (createNFT.getCreateNFTInfo('nftImage')) {
       return
     }

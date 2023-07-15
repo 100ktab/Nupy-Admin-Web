@@ -1,4 +1,4 @@
-export const makeText = (keyword, tone) => {
+export const makeText = (keyword: string, tone: string) => {
   return new Promise((resolve, reject) => {
     fetch('/ai/gpt', {
       method: 'POST',
@@ -25,7 +25,7 @@ export const makeText = (keyword, tone) => {
 
 }
 
-export const makeImage = async (description) => {
+export const makeImage = async (description: string) => {
   return new Promise((resolve, reject) => {
     fetch('/ai/stability', {
       method: 'POST',

@@ -20,7 +20,7 @@ const NFTDescriptionTone = () => {
     }
     ]
 
-  const onClick = (value) => {
+  const onClick = (value: string) => {
     createNFT.addChat({
       template: MessageTemplateType.DEFAULT,
       text: tones.filter(item => item.type === value)[0].title

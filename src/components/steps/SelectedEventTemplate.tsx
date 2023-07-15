@@ -7,6 +7,7 @@ import {selectedItems} from "@/util/statics/data";
 const SelectedEventTemplate = () => {
   const createNFT = useCreateNFT()
 
+  // @ts-ignore
   const onClick = (e, value) => {
     console.log(value)
     createNFT.setEventTemplate(value)

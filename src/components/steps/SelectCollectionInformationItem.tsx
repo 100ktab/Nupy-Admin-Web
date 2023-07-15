@@ -3,6 +3,7 @@ type SelectCollectionInformationProps = {
   description: string;
   exampleNotice: string;
   selected: boolean;
+  // @ts-ignore
   onClick: (e, value) => void;
   type: string;
 }

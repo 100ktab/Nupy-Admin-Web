@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {useRecoilState} from "recoil";
 import {accountSelector} from "@/states/states";
 

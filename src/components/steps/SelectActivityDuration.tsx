@@ -7,7 +7,7 @@ import {MessageTemplateType} from "@/util/enums/enum";
 const SelectActivityDuration = () => {
   const createNFT = useCreateNFT()
 
-  const handleChangeStartDateTime = (startTimeStamp) => {
+  const handleChangeStartDateTime = (startTimeStamp: number) => {
     createNFT.setCreateInfo('startDateTime', startTimeStamp)
     console.log(createNFT.getCreateNFTInfo('endDateTime'))
     if (createNFT.getCreateNFTInfo('endDateTime')) {
@@ -15,7 +15,7 @@ const SelectActivityDuration = () => {
     }
   }
 
-  const handleChangeEndDateTime = (endTimeStamp) => {
+  const handleChangeEndDateTime = (endTimeStamp: number) => {
     createNFT.setCreateInfo('endDateTime', endTimeStamp)
     console.log(createNFT.getCreateNFTInfo('startDateTime'))
     if (createNFT.getCreateNFTInfo('startDateTime')) {

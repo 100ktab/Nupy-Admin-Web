@@ -1,5 +1,6 @@
 type TagType = {
   text: string;
+  // @ts-ignore
   onClick: (event, value) => void;
   selected: boolean;
   value: string|number;

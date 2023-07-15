@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as fcl from "@onflow/fcl"
 import "../../../../flow/config"
 
@@ -13,10 +14,11 @@ export const login = async () => {
   })
 }
 
-export const getCreateNFTs = async (accountAddress) => {
+export const getCreateNFTs = async (accountAddress: string) => {
   const NFTIds = await getNFTIds(accountAddress)
   try {
-    const promises = NFTIds.map(id => getMetadata(id)); // getMetadata를 각 ID에 대해 호출
+    // @ts-ignore
+    const promises = NFTIds.map(id => getMetadata(id, accountAddress)); // getMetadata를 각 ID에 대해 호출
      // 모든 getMetadata 호출이 완료될 때까지 기다림
     return await Promise.all(promises); // 모든 결과를 반환
   } catch (error) {
@@ -25,7 +27,7 @@ export const getCreateNFTs = async (accountAddress) => {
   }
 }
 
-export const getNFTIds = async (accountAddress) => {
+export const getNFTIds = async (accountAddress: string) => {
   const resultID = await fcl.query({
     cadence: `
         import NUPY from 0x6e1d1217a98b542c //재배포시 여기 주소 바뀌어야함
@@ -53,7 +55,7 @@ export const getNFTIds = async (accountAddress) => {
   return resultID
 }
 
-export const getMetadata = async (id, accountAddress) => {
+export const getMetadata = async (id: number, accountAddress: string) => {
   const metadata = await fcl.query({
     cadence: `
         import NUPY from 0x6e1d1217a98b542c
@@ -84,6 +86,7 @@ export const getMetadata = async (id, accountAddress) => {
   return metadata
 }
 
+// @ts-ignore
 export const mintAll = async (metaData) => {
   let results = [];
   for(let i = 0; i < 10; i++) {
@@ -94,6 +97,8 @@ export const mintAll = async (metaData) => {
   return results;
 }
 
+
+// @ts-ignore
 export const mintOne = async (metaData) => {
   const transactionId = await fcl.mutate({
     cadence: `

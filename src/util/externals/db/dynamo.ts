@@ -1,6 +1,6 @@
 import {DynamoDBClient, GetItemCommand, PutItemCommand} from "@aws-sdk/client-dynamodb";
 
-export const storeAccessCode = async (address, accessCode, collectionId) => {
+export const storeAccessCode = async (address: string, accessCode: string, collectionId: string) => {
   const client = getClient()
   const item = {
     id: { S: accessCode },
@@ -21,7 +21,7 @@ export const storeAccessCode = async (address, accessCode, collectionId) => {
   }
 }
 
-export const getByAccessCode = async (accessCode) => {
+export const getByAccessCode = async (accessCode: string) => {
   const client = getClient()
   const params = {
     TableName: 'access_codes',
@@ -51,10 +51,10 @@ export const getByAccessCode = async (accessCode) => {
 const getClient = () => {
   return new DynamoDBClient({
     credentials: {
-      accessKeyId: process.env.AWS_ACCESS_ID,
-      secretAccessKey: process.env.AWS_ACCESS_KEY,
+      accessKeyId: process.env.AWS_ACCESS_ID || '',
+      secretAccessKey: process.env.AWS_ACCESS_KEY || '',
     },
-    region: process.env.AWS_REGION_KEY
+    region: process.env.AWS_REGION_KEY || ''
   })
 }
 

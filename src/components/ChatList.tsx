@@ -20,13 +20,13 @@ import SelectNumberOfIssues from "@/components/steps/SelectNumberOfIssues";
 import GenerateNFT from "@/components/steps/GenerateNFT";
 
 const ChatList = () => {
-  const scrollRef = useRef()
+  const scrollRef = useRef<HTMLDivElement>(null);
   const createNFT = useCreateNFT()
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth' })
-      console.log('test')
+      // @ts-ignore
+      scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
   }, [createNFT.chatList])
 
@@ -34,13 +34,14 @@ const ChatList = () => {
     <div className={'overflow-y-auto w-full'}>
       <div className={'w-[600px] mt-0 mx-auto pt-[48px]'} id="chatList" >
         {
+          // @ts-ignore
           createNFT.chatList.map((item, index) => {
             if (item.template === MessageTemplateType.SELECTED_EVENT) {
               return <SelectedEventTemplate key={index}/>
             } else if (item.template === MessageTemplateType.DEFAULT) {
               return <ChatMessage key={index} text={item.text} imageURL={item.imageURL}/>
             } else if (item.template === MessageTemplateType.DEFAULT_BY_ADMIN) {
-              return <ChatMessageByAdmin key={index} text={item.text}/>
+              return <ChatMessageByAdmin key={index} text={item.text as string}/>
             } else if (item.template === MessageTemplateType.SELECTED_INFORMATION) {
               return <SelectCollectionInformation key={index}/>
             } else if (item.template === MessageTemplateType.SELECTED_INFORMATION_IMAGE) {

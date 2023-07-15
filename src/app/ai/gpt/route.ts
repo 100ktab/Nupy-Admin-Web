@@ -17,21 +17,21 @@ export async function POST(request: Request) {
     })
     console.log(completion.data.choices)
     return NextResponse.json({ result: completion.data.choices[0].text });
-  } catch(error) {
+  } catch(error: any) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
       console.error(error.response.status, error.response.data);
-      return NextResponse.json({ error: error.response.data }, { status: error.response.status })
+      return NextResponse.json({ error: error.response.data ,  status: error.response.status })
     } else {
       console.error(`Error with OpenAI API request: ${error.message}`);
       return NextResponse.json({ error: {
           message: 'An error occurred during your request.',
-        } }, { status: 500 })
+        },status: 500 })
     }
   }
 }
 
-const generatePrompt = (tone, keyword) => {
+const generatePrompt = (tone: string, keyword: string) => {
   let toneText = ''
   if (tone === Tone.PLEASANT) {
     toneText = ' in a pleasant way'

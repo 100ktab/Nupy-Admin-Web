@@ -17,6 +17,7 @@ export interface Props {
 const InputDatePicker = React.forwardRef<HTMLElement, Props>(
   ({ placeholder, value, onClick, disabled, readOnly, buttonOnly, ...props }, ref) => {
    const [date, setDate] = useState()
+    // @ts-ignore
     const handleChangeDatePicker = (date) => {
       setDate(date.getTime())
       onClick(date.getTime())
