@@ -9,8 +9,10 @@ const SelectedEventTemplate = () => {
 
   // @ts-ignore
   const onClick = (e, value) => {
-    console.log(value)
-    createNFT.setEventTemplate(value)
+    if (createNFT.getCreateNFTInfo().selectedEventTemplate){
+      return
+    }
+    createNFT.setCreateInfo('selectedEventTemplate', value)
     createNFT.addChat({
       template: MessageTemplateType.DEFAULT,
       text: selectedItems.filter(item => item.type === value)[0].title
@@ -20,8 +22,6 @@ const SelectedEventTemplate = () => {
       text: ''
     })
     createNFT.nextStep()
-    console.log(value)
-    console.log(createNFT.chatList)
   }
 
   return (
@@ -31,7 +31,7 @@ const SelectedEventTemplate = () => {
         <div className={'w-[520px] justify-start items-start gap-3 inline-flex flex-wrap'}>
           {
             selectedItems.map((item, index) => {
-              const selectedEventTemplate = createNFT.getSelectedEventTemplate()
+              const selectedEventTemplate = createNFT.getCreateNFTInfo().selectedEventTemplate
               return <Tag
                 key={index}
                 text={item.title}

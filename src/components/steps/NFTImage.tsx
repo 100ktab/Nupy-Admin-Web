@@ -17,7 +17,7 @@ const NFTImage = () => {
   const dragRef = useRef<HTMLDivElement>(null);
 
   const handleClickMakeImage = async () => {
-    makeImage(createNFT.getNFTDescription())
+    makeImage(createNFT.getCreateNFTInfo().nftDescription)
       .then(result => {
         // @ts-ignore
         setImages(result)
@@ -29,7 +29,7 @@ const NFTImage = () => {
   }
 
   const uploadIPFSByBase64 = (imageURL: string) => {
-    if (createNFT.getCreateNFTInfo('nftImage')) {
+    if (createNFT.getCreateNFTInfo().nftImage) {
       return
     }
     uploadByBase64(imageURL, account.getAddress())

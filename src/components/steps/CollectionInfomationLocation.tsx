@@ -9,8 +9,8 @@ import {useCreateNFT} from "@/util/hooks/useCreateNFT";
 const CollectionInformationAddress = () => {
   const createNFT = useCreateNFT()
   const center = {
-    longitude: createNFT.getLng(),
-    latitude: createNFT.getLat()
+    longitude: createNFT.getLocation().longitude,
+    latitude: createNFT.getLocation().latitude
   }
   const mapRef = useRef(null)
   const [range, setRange] = useState(0.05)
@@ -52,7 +52,7 @@ const CollectionInformationAddress = () => {
   }, [])
 
   const onClick = (value: number) => {
-    if (createNFT.getRange()) {
+    if (createNFT.getLocation().range) {
       return
     }
     const selectedRange = value
@@ -71,7 +71,7 @@ const CollectionInformationAddress = () => {
       template: MessageTemplateType.NFT_TITLE,
       text: ''
     })
-    createNFT.setRange(selectedRange)
+    createNFT.setLocationInfo('range', selectedRange)
     createNFT.setCurrentTemplate(MessageTemplateType.NFT_TITLE)
     createNFT.nextStep()
   }
@@ -116,7 +116,7 @@ const CollectionInformationAddress = () => {
       <div className={'gap-2 flex'}>
         {
           ranges.map((item, index) => {
-            const range = createNFT.getRange()
+            const range = createNFT.getLocation().range
             return <Tag
               key={index}
               text={item.title}

@@ -9,16 +9,16 @@ const SelectActivityDuration = () => {
 
   const handleChangeStartDateTime = (startTimeStamp: number) => {
     createNFT.setCreateInfo('startDateTime', startTimeStamp)
-    console.log(createNFT.getCreateNFTInfo('endDateTime'))
-    if (createNFT.getCreateNFTInfo('endDateTime')) {
+    console.log(createNFT.getCreateNFTInfo().endDateTime)
+    if (createNFT.getCreateNFTInfo().endDateTime) {
       nextStep()
     }
   }
 
   const handleChangeEndDateTime = (endTimeStamp: number) => {
     createNFT.setCreateInfo('endDateTime', endTimeStamp)
-    console.log(createNFT.getCreateNFTInfo('startDateTime'))
-    if (createNFT.getCreateNFTInfo('startDateTime')) {
+    console.log(createNFT.getCreateNFTInfo().startDateTime)
+    if (createNFT.getCreateNFTInfo().startDateTime) {
       nextStep()
     }
   }

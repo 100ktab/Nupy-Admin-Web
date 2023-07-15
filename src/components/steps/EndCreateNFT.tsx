@@ -7,7 +7,7 @@ const EndCreateNFT = () => {
 
   const handleClickCopy = async () => {
     try {
-      await navigator.clipboard.writeText(`https://android_nupy?code=${createNFT.getCreateNFTInfo('enterCode')}`)
+      await navigator.clipboard.writeText(`https://android_nupy?code=${createNFT.getCreateNFTInfo().enterCode}`)
       console.log('Text copied to clipboard');
     } catch (err) {
       console.error('Failed to copy text: ', err);
@@ -16,11 +16,11 @@ const EndCreateNFT = () => {
 
   return (
     <ChatMessageByAdmin
-      text={`${createNFT.getCreateNFTInfo('enterCode')} has been confirmed. \n Next, generate the URL to enter the room!`}
+      text={`${createNFT.getCreateNFTInfo().enterCode} has been confirmed. \n Next, generate the URL to enter the room!`}
     >
       <div className="w-[480px] p-6 bg-white rounded-[20px] border border-zinc-400 flex-col justify-start items-start gap-5 inline-flex">
         <div className="text-zinc-800 text-xl font-bold">
-          {`https://android_nupy?code=${createNFT.getCreateNFTInfo('enterCode')}`}
+          {`https://android_nupy?code=${createNFT.getCreateNFTInfo().enterCode}`}
         </div>
         <button
           className="px-5 py-2.5 bg-green-500 rounded-xl"

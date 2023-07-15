@@ -1,3 +1,6 @@
+import {util} from "protobufjs";
+import float = util.float;
+
 export type AccountType = {
   addr: string,
   cid: string,
@@ -34,4 +37,10 @@ export type ChatType = {
   template: string;
   text?: string;
   imageURL?: string;
+  reset?: boolean;
+}
+
+export type SetCreateNFTType = {
+  key: string;
+  value: string|number;
 }

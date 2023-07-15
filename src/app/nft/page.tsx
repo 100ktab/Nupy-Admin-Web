@@ -7,14 +7,13 @@ import Header from "@/components/Header";
 import {useEffect} from "react";
 import {useAccount} from "@/util/hooks/useAccount";
 import {useRouter} from "next/navigation";
+import {useCreateNFT} from "@/util/hooks/useCreateNFT";
 
 export default function Home() {
   const account = useAccount()
-  const router = useRouter()
-
-  console.log(account.getAddress())
+  const createNFT = useCreateNFT()
   useEffect(() => {
-
+    createNFT.resetChatList()
   }, [])
 
   return (

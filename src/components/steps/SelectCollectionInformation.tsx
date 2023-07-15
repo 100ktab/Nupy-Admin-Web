@@ -31,17 +31,17 @@ const SelectCollectionInformation = () => {
 
   // @ts-ignore
   const handleClick = (e, value) => {
-    if (creatNFT.getSelectedCollectInformation()) {
+    if (creatNFT.getCreateNFTInfo().selectedCollectInformation) {
       return
     }
 
-    creatNFT.setCollectInformation(value)
+    creatNFT.setCreateInfo('selectedCollectInformation', value)
     creatNFT.addChat({
       template: MessageTemplateType.DEFAULT,
       text: selectedItems.filter(item => item.type === value)[0].title
     })
 
-    if (value === SelectCollectInformationType.IMAGE) {
+    if (value === SelectCollectInformationType.IMAGE || value === SelectCollectInformationType.TEXT) {
       creatNFT.addChat({
         template: MessageTemplateType.SELECTED_INFORMATION_IMAGE,
         text: ''
@@ -61,7 +61,7 @@ const SelectCollectionInformation = () => {
       <ChatMessageByAdmin text={'Based on the activity you have chosen, it is recommended to collect the following information.\n' +
         ' Please select an information collection option for the user.'}>
         {selectedItems.map((item, index) => {
-          const selectCollectInformation = creatNFT.getSelectedCollectInformation()
+          const selectCollectInformation = creatNFT.getCreateNFTInfo().selectedCollectInformation
           return <SelectCollectionInformationItem
             key={index}
             title={item.title}

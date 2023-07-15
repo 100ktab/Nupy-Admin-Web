@@ -41,7 +41,7 @@ const NFTDescriptionTone = () => {
         <div className="justify-start items-start gap-3 inline-flex mt-[20px]">
           {
             tones.map((item, index) => {
-              const tone = createNFT.getCreateNFTInfo('tone')
+              const tone = createNFT.getCreateNFTInfo().tone
               return <Tag
                 key={index}
                 text={item.title}

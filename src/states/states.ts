@@ -1,6 +1,6 @@
 // @ts-nocheck
 import {atom, selector} from "recoil";
-import {AccountType, ChatType, CreateNFTType, SearchLocationType} from "@/util/types/types";
+import {AccountType, ChatType, CreateNFTType, SearchLocationType, SetCreateNFTType} from "@/util/types/types";
 import {CreateNFTStep, MessageTemplateType} from "@/util/enums/enum";
 
 /**
@@ -47,6 +47,38 @@ export const createNTFState = atom<CreateNFTType>({
   }
 })
 
+export const createNTFSelector = selector<CreateNFTType, SetCreateNFTType>({
+  key: 'createNTFSelector',
+  get: ({get}) => get(createNTFState),
+  set: ({get, set}, newValue: SetCreateNFTType | null) => {
+    if (newValue === null) {
+      set(createNTFState,  {
+        step: CreateNFTStep.step1,
+        currentTemplate: MessageTemplateType.SELECTED_EVENT,
+        selectedEventTemplate: '',
+        selectedCollectInformation: '',
+        nftTitle: '',
+        nftDescription:'',
+        tone: '',
+        nftImage: '',
+        numberOfIssue: 0,
+        enterCode: '',
+        startDateTime: 0,
+        endDateTime: 0,
+        collectInformationDescription: "",
+      });
+    } else {
+      set(createNTFState,
+        (oldChatListState) => ({
+          ...oldChatListState,
+          [`${newValue.key}`] : newValue.value
+        })
+      )
+    }
+  },
+})
+
+
 export const searchLocation = atom<SearchLocationType>({
   key: 'searchLocation',
   default: {
@@ -73,10 +105,20 @@ export const chatListState = atom<ChatType[]>({
   ]
 })
 
-export const chatListSelector = selector({
+export const chatListSelector = selector<ChatType[], ChatType|null>({
   key: 'chatListSelector',
   get: ({get}) => get(chatListState),
-  set: ({set}, newChatItem: ChatType) => {
-    set(chatListState, (oldChatListState) => [...oldChatListState, newChatItem]);
+  set: ({set}, newChatItem: ChatType | null) => {
+    if (newChatItem === null) {
+      set(chatListState,  [
+        {
+          template: MessageTemplateType.SELECTED_EVENT,
+          text: '',
+          imageURL: '',
+        }
+      ]);
+    } else {
+      set(chatListState, (oldChatListState) => [...oldChatListState, newChatItem]);
+    }
   },
 })

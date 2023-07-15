@@ -28,7 +28,7 @@ const LNB = () => {
       <div className="flex-col justify-start items-start gap-8 inline-flex">
         {
           LNBs.map((item, index) => {
-            const currentStep = lnb.getStep()
+            const currentStep = lnb.getCreateNFTInfo().step
             return (
               <LNBItem
                 key={index}
