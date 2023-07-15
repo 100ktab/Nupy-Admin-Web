@@ -4,7 +4,8 @@ import Header from "@/components/Header";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Detail({ params }) {
+export default function Detail({params} : {params: { enterCode: string }}) {
+  console.log(params)
   const nftInfo = {
     nftTile: "Activity Title",
     createDate : "2023.04.08",

@@ -39,7 +39,7 @@ const ChatList = () => {
             if (item.template === MessageTemplateType.SELECTED_EVENT) {
               return <SelectedEventTemplate key={index}/>
             } else if (item.template === MessageTemplateType.DEFAULT) {
-              return <ChatMessage key={index} text={item.text} imageURL={item.imageURL}/>
+              return <ChatMessage key={index} text={item.text || ""} imageURL={item.imageURL || ""}/>
             } else if (item.template === MessageTemplateType.DEFAULT_BY_ADMIN) {
               return <ChatMessageByAdmin key={index} text={item.text as string}/>
             } else if (item.template === MessageTemplateType.SELECTED_INFORMATION) {
