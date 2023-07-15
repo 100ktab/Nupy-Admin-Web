@@ -100,6 +100,7 @@ export const mintAll = async (metaData) => {
 
 // @ts-ignore
 export const mintOne = async (metaData) => {
+  console.log(metaData)
   const transactionId = await fcl.mutate({
     cadence: `
         import NUPY from 0x6e1d1217a98b542c. //중요
@@ -127,7 +128,7 @@ export const mintOne = async (metaData) => {
           }
       }  
       `,
-    args: (arg, t) => [arg( JSON.stringify(metaData), t.String)], //메타데이터
+    args: (arg, t) => [arg('{"json":"1ds","key2":"value Hi"}', t.String)], //메타데이터
     payer: fcl.authz,
     proposer: fcl.authz,
     authorizations: [fcl.authz],
