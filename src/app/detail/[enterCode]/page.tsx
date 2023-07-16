@@ -3,9 +3,20 @@
 import Header from "@/components/Header";
 import Image from "next/image";
 import Link from "next/link";
+import {useAccount} from "@/util/hooks/useAccount";
+import {useRouter} from "next/navigation";
+import {useEffect} from "react";
 
 export default function Detail({params} : {params: { enterCode: string }}) {
-  console.log(params)
+  const account = useAccount()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!account.isLoggedIn()) {
+      router.replace('/')
+    }
+  }, [])
+
   const nftInfo = {
     nftTile: "Activity Title",
     createDate : "2023.04.08",

@@ -3,6 +3,23 @@ import {atom, selector} from "recoil";
 import {AccountType, ChatType, CreateNFTType, SearchLocationType, SetCreateNFTType} from "@/util/types/types";
 import {CreateNFTStep, MessageTemplateType} from "@/util/enums/enum";
 
+// setSelf 함수 초기화값 지정, onSet 함수는 값이 변경될 때마다 값을 동기화
+const localStorageEffect = () => ({setSelf, onSet}) => {
+  const customWindow = typeof window !== 'undefined' ? window : null
+  const customLocalStorage = typeof window !== 'undefined' ? window.localStorage : null
+  const savedValue = customLocalStorage?.getItem('user')
+  if (savedValue != null) {
+    setSelf(JSON.parse(savedValue));
+  }
+  onSet((newValue, _, isReset) => {
+    if (isReset) {
+      customLocalStorage?.removeItem('user')
+    } else {
+      customLocalStorage?.setItem('user', JSON.stringify(newValue));
+    }
+  });
+}
+
 /**
  * 유저 정보
  */
@@ -14,7 +31,8 @@ export const accountState = atom<AccountType>({
     expiredAt: 0,
     f_type: "USER",
     loggedIn: false
-  }
+  },
+  effects: [localStorageEffect()]
 })
 
 export const accountSelector = selector<AccountType>({
@@ -44,6 +62,7 @@ export const createNTFState = atom<CreateNFTType>({
     startDateTime: 0,
     endDateTime: 0,
     collectInformationDescription: "",
+    displayAppComment: '',
   }
 })
 
@@ -66,6 +85,7 @@ export const createNTFSelector = selector<CreateNFTType, SetCreateNFTType>({
         startDateTime: 0,
         endDateTime: 0,
         collectInformationDescription: "",
+        displayAppComment: '',
       });
     } else {
       set(createNTFState,

@@ -5,15 +5,22 @@ import LNB from "@/components/lnb/LNB";
 import ChatList from "@/components/ChatList";
 import Header from "@/components/Header";
 import {useEffect} from "react";
+import {useCreateNFT} from "@/util/hooks/useCreateNFT";
 import {useAccount} from "@/util/hooks/useAccount";
 import {useRouter} from "next/navigation";
-import {useCreateNFT} from "@/util/hooks/useCreateNFT";
 
 export default function Home() {
   const account = useAccount()
   const createNFT = useCreateNFT()
+  const router = useRouter()
+
   useEffect(() => {
-    createNFT.resetChatList()
+    if (!account.isLoggedIn()) {
+      router.replace('/')
+    }
+    return () => {
+      createNFT.resetChatList()
+    }
   }, [])
 
   return (

@@ -41,12 +41,18 @@ const SelectCollectionInformation = () => {
       text: selectedItems.filter(item => item.type === value)[0].title
     })
 
-    if (value === SelectCollectInformationType.IMAGE || value === SelectCollectInformationType.TEXT) {
+    if (value === SelectCollectInformationType.IMAGE) {
       creatNFT.addChat({
         template: MessageTemplateType.SELECTED_INFORMATION_IMAGE,
         text: ''
       })
       creatNFT.setCurrentTemplate(MessageTemplateType.SELECTED_INFORMATION_IMAGE)
+    } else if (value === SelectCollectInformationType.TEXT) {
+      creatNFT.addChat({
+        template: MessageTemplateType.SELECTED_INFORMATION_TEXT,
+        text: ''
+      })
+      creatNFT.setCurrentTemplate(MessageTemplateType.SELECTED_INFORMATION_TEXT)
     } else if(value === SelectCollectInformationType.GPS) {
       creatNFT.addChat({
         template: MessageTemplateType.SELECTED_INFORMATION_COUNTRY,

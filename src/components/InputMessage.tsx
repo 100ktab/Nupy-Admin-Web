@@ -41,6 +41,7 @@ const InputMessage = () => {
       template: MessageTemplateType.DEFAULT,
       text: input
     })
+    setInput('')
   }
 
   return (

@@ -52,12 +52,20 @@ export const useCreateNFT = () => {
 
   const addChat = (newChat: ChatType) => {
     setChatList(newChat)
-    if (createNFT.currentTemplate === MessageTemplateType.SELECTED_INFORMATION_IMAGE) {
+    if (
+      createNFT.currentTemplate === MessageTemplateType.SELECTED_INFORMATION_IMAGE ||
+      createNFT.currentTemplate === MessageTemplateType.SELECTED_INFORMATION_TEXT
+    ) {
       setChatList({
         template: MessageTemplateType.DEFAULT_BY_ADMIN,
         text: 'Thank you :)'
       })
-      setCurrentTemplate(MessageTemplateType.END)
+      setCreateInfo('displayAppComment', newChat.text)
+      setChatList({
+        template: MessageTemplateType.NFT_TITLE,
+        text: ''
+      })
+      setCurrentTemplate(MessageTemplateType.NFT_TITLE)
     } else if(createNFT.currentTemplate === MessageTemplateType.SELECTED_INFORMATION_COUNTRY) {
       const input = newChat.text?.toLocaleUpperCase()
       const searchResultBySameText = checkSameString(input)
@@ -157,10 +165,7 @@ export const useCreateNFT = () => {
 
   const resetChatList = () => {
     setChatList(null)
-    setCreateNFT({
-      key: 'step',
-      value: CreateNFTStep.step1
-    })
+    setCreateNFT(null)
   }
 
   const getCreateNFTParams = () => {

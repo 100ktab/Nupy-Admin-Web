@@ -8,14 +8,40 @@ import {getCreateNFTs} from "@/util/externals/wallet/wallet";
 import {selectedItems} from "@/util/statics/data";
 import Link from "next/link";
 import CreateTemplateItem from "@/components/CreateTemplateItem";
+import {useEffect} from "react";
+import {MessageTemplateType} from "@/util/enums/enum";
+import {useCreateNFT} from "@/util/hooks/useCreateNFT";
 
 export default function Home() {
   const account = useAccount()
+  const createNFT = useCreateNFT()
   const router = useRouter()
+
+  useEffect(() => {
+    if (!account.isLoggedIn()) {
+      router.replace('/')
+    }
+
+    getNFTs()
+  })
 
   const getNFTs = async () => {
     const result = await getCreateNFTs(account.getAddress())
     console.log(result)
+  }
+
+  const handleClickTemplate = (type: string) => {
+    createNFT.setCreateInfo('selectedEventTemplate', type)
+    createNFT.addChat({
+      template: MessageTemplateType.DEFAULT,
+      text: selectedItems.filter(item => item.type === type)[0].title
+    })
+    createNFT.addChat({
+      template: MessageTemplateType.SELECTED_INFORMATION,
+      text: ''
+    })
+    createNFT.nextStep()
+    router.push('/nft')
   }
 
   return (
@@ -53,6 +79,7 @@ export default function Home() {
                   <button
                     key={index}
                     className="basis-[23%] p-5 bg-zinc-100 rounded-xl gap-[20px] text-left"
+                    onClick={() => {handleClickTemplate(item.type)}}
                   >
                     <Image src={item.icon} alt={item.title} width={24} height={24} className={'mb-[16px]'}/>
                     <div className="text-black text-base font-bold">{item.title}</div>

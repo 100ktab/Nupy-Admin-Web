@@ -3,7 +3,7 @@ import {MessageTemplateType} from "@/util/enums/enum";
 import SelectedEventTemplate from "@/components/steps/SelectedEventTemplate";
 import ChatMessageByAdmin from "@/components/steps/ChatMessageByAdmin";
 import SelectCollectionInformation from "@/components/steps/SelectCollectionInformation";
-import CollectionInformationImage from "@/components/steps/CollectionInfomationImageOrText";
+import CollectionInformationImage from "@/components/steps/CollectionInfomationImage";
 import {useCreateNFT} from "@/util/hooks/useCreateNFT";
 import {useEffect, useRef} from "react";
 import CollectionInfomationCountry from "@/components/steps/CollectionInfomationCountry";
@@ -18,6 +18,7 @@ import EnterCode from "@/components/steps/EnterCode";
 import EndCreateNFT from "@/components/steps/EndCreateNFT";
 import SelectNumberOfIssues from "@/components/steps/SelectNumberOfIssues";
 import GenerateNFT from "@/components/steps/GenerateNFT";
+import CollectionInfomationText from "@/components/steps/CollectionInfomationText";
 
 const ChatList = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -46,6 +47,8 @@ const ChatList = () => {
               return <SelectCollectionInformation key={index}/>
             } else if (item.template === MessageTemplateType.SELECTED_INFORMATION_IMAGE) {
               return <CollectionInformationImage key={index}/>
+            } else if (item.template === MessageTemplateType.SELECTED_INFORMATION_TEXT) {
+              return <CollectionInfomationText key={index}/>
             } else if (item.template === MessageTemplateType.SELECTED_INFORMATION_COUNTRY) {
               return <CollectionInfomationCountry key={index}/>
             } else if (item.template === MessageTemplateType.SELECTED_INFORMATION_ADDRESS) {
