@@ -1,7 +1,7 @@
 import {NextResponse} from 'next/server';
 
 export async function POST(request: Request) {
-  const engineId = 'stable-diffusion-512-v2-1'
+  const engineId = process.env.STABILITY_MODEL
   const apiHost = process.env.API_HOST ?? 'https://api.stability.ai'
   const apiKey = process.env.STABILITY_API_KEY
   const params = await request.json()
@@ -29,7 +29,7 @@ Example: ${params.description}`
           clip_guidance_preset: 'FAST_BLUE',
           height: 512,
           width: 512,
-          samples: 1,
+          samples: process.env.STABILITY_SAMPLE_COUNT,
           steps: 30,
           style_preset: 'anime'
         }),
