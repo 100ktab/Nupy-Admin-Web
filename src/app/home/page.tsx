@@ -17,12 +17,14 @@ export default function Home() {
   const createNFT = useCreateNFT()
   const router = useRouter()
 
+  console.log(createNFT.NFTList)
+
   useEffect(() => {
     if (!account.isLoggedIn()) {
       router.replace('/')
     }
 
-    getNFTs()
+    //getNFTs()
   })
 
   const getNFTs = async () => {
@@ -62,12 +64,12 @@ export default function Home() {
                 <div className="text-white text-lg font-bold">create event</div>
               </div>
             </Link>
-            <CreateTemplateItem/>
-            <CreateTemplateItem/>
-            <CreateTemplateItem/>
-            <CreateTemplateItem/>
-            <CreateTemplateItem/>
-            <CreateTemplateItem/>
+            {
+              createNFT.NFTList.length > 0 &&
+              createNFT.NFTList.map((nft, index) => {
+                return <CreateTemplateItem key={index} nft={nft}/>
+              }).reverse()
+            }
           </div>
         </div>
         <div className="w-[1000px] p-[40px] bg-white rounded-[20px] my-0 mx-auto">

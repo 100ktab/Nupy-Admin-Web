@@ -1,7 +1,17 @@
+// @ts-nocheck
 import {Web3Storage} from 'web3.storage';
 
 const getClient = () => {
   return new Web3Storage({ token: process.env.WEB3_STORAGE_API_KEY || "" });
+}
+
+export const getImage = async (uri: string) => {
+  const client = getClient()
+  const rootCid = uri.split(':')[1]
+  const res = await client.get(rootCid); // Web3Response
+  const files = await res.files(); // Web3File[]
+  const file = files[0]
+  return `https://${rootCid}.ipfs.w3s.link/${encodeURIComponent(file.name)}`
 }
 
 // @ts-ignore

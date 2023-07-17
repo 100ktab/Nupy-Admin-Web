@@ -1,21 +1,21 @@
 // @ts-nocheck
 import {atom, selector} from "recoil";
-import {AccountType, ChatType, CreateNFTType, SearchLocationType, SetCreateNFTType} from "@/util/types/types";
+import {AccountType, ChatType, CreateNFTType, NFTType, SearchLocationType, SetCreateNFTType} from "@/util/types/types";
 import {CreateNFTStep, MessageTemplateType} from "@/util/enums/enum";
 
 // setSelf 함수 초기화값 지정, onSet 함수는 값이 변경될 때마다 값을 동기화
-const localStorageEffect = () => ({setSelf, onSet}) => {
+const localStorageEffect = (key) => ({setSelf, onSet}) => {
   const customWindow = typeof window !== 'undefined' ? window : null
   const customLocalStorage = typeof window !== 'undefined' ? window.localStorage : null
-  const savedValue = customLocalStorage?.getItem('user')
+  const savedValue = customLocalStorage?.getItem(key)
   if (savedValue != null) {
     setSelf(JSON.parse(savedValue));
   }
   onSet((newValue, _, isReset) => {
     if (isReset) {
-      customLocalStorage?.removeItem('user')
+      customLocalStorage?.removeItem(key)
     } else {
-      customLocalStorage?.setItem('user', JSON.stringify(newValue));
+      customLocalStorage?.setItem(key, JSON.stringify(newValue));
     }
   });
 }
@@ -32,7 +32,7 @@ export const accountState = atom<AccountType>({
     f_type: "USER",
     loggedIn: false
   },
-  effects: [localStorageEffect()]
+  effects: [localStorageEffect('user')]
 })
 
 export const accountSelector = selector<AccountType>({
@@ -141,4 +141,13 @@ export const chatListSelector = selector<ChatType[], ChatType|null>({
       set(chatListState, (oldChatListState) => [...oldChatListState, newChatItem]);
     }
   },
+})
+
+/**
+ * 채팅 리스트
+ */
+export const NFTListState = atom<NFTType[]>({
+  key: 'NFTListState',
+  default: [],
+  effects: [localStorageEffect('nftList')]
 })

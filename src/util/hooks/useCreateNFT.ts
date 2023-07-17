@@ -1,7 +1,14 @@
 // @ts-nocheck
 import {useRecoilState} from "recoil";
-import {accountSelector, chatListSelector, createNTFSelector, createNTFState, searchLocation} from "@/states/states";
-import {ChatType, CreateNFTType, SearchLocationType} from "@/util/types/types";
+import {
+  accountSelector,
+  chatListSelector,
+  createNTFSelector,
+  createNTFState,
+  NFTListState,
+  searchLocation
+} from "@/states/states";
+import {ChatType, CreateNFTType, NFTType, SearchLocationType} from "@/util/types/types";
 import {CreateNFTStep, MessageTemplateType} from "@/util/enums/enum";
 import {makeText} from "@/util/externals/ai/client";
 import {checkSameString, rexpString, toTitleCase} from "@/util/string/stringUtil";
@@ -13,6 +20,7 @@ export const useCreateNFT = () => {
   const [location, setLocation] = useRecoilState(searchLocation)
   const [chatList, setChatList] = useRecoilState(chatListSelector)
   const [account, setAccountInfo] = useRecoilState(accountSelector)
+  const [NFTList, setNFTList] = useRecoilState(NFTListState)
 
   const getLocation = () => {
     return location
@@ -60,7 +68,7 @@ export const useCreateNFT = () => {
         template: MessageTemplateType.DEFAULT_BY_ADMIN,
         text: 'Thank you :)'
       })
-      setCreateInfo('displayAppComment', newChat.text)
+      setCreateInfo('collectInformationDescription', newChat.text)
       setChatList({
         template: MessageTemplateType.NFT_TITLE,
         text: ''
@@ -103,8 +111,10 @@ export const useCreateNFT = () => {
       setLocation((prev) => ({...prev, address: newChat.text as string}))
       searchAddress(address, location.country)
         .then(result => {
-          const longitude = parseFloat(result[0] as string)
-          const latitude = parseFloat(result[1] as string)
+          const {location, address} = result
+          console.log(result)
+          const longitude = parseFloat(location[0] as string)
+          const latitude = parseFloat(location[1] as string)
           setChatList({
             template: MessageTemplateType.SELECTED_INFORMATION_LOCATION,
             text: ''
@@ -115,6 +125,7 @@ export const useCreateNFT = () => {
             longitude: longitude,
             latitude: latitude
           }));
+          setLocation((prev: SearchLocationType) => ({...prev, address: address}))
           setLocation((prev: SearchLocationType) => ({...prev, longitude: longitude, latitude: latitude}))
           }).catch(e => {
         setChatList({
@@ -123,7 +134,7 @@ export const useCreateNFT = () => {
         })
       })
     } else if(createNFT.currentTemplate === MessageTemplateType.NFT_TITLE) {
-      setCreateNFT((prev) => ({...prev, nftTitle: newChat.text}))
+      setCreateInfo('nftTitle', newChat.text)
       setChatList({
         template: MessageTemplateType.NFT_DESCRIPTION_TONE,
       })
@@ -132,8 +143,7 @@ export const useCreateNFT = () => {
       makeText(newChat.text, createNFT.tone)
         .then(result => {
           // API 호출 결과값(result)을 사용하는 로직 작성
-          console.log(result);
-          setCreateNFT((prev: CreateNFTType) => ({...prev, nftDescription: result.replace(/\n/g, '') as string}))
+          setCreateInfo('nftDescription', result.replace(/\n/g, '') as string)
           setChatList({
             template: MessageTemplateType.DEFAULT_BY_ADMIN,
             text: result as string
@@ -148,27 +158,44 @@ export const useCreateNFT = () => {
           console.error(error);
         });
     } else if (createNFT.currentTemplate === MessageTemplateType.NUMBER_OF_ISSUES) {
-      setCreateNFT((prev) => ({...prev, numberOfIssue: newChat.text as number}))
+      setCreateInfo('numberOfIssue', newChat.text as number)
       setChatList({
         template: MessageTemplateType.ENTER_CODE,
       })
       setCurrentTemplate(MessageTemplateType.ENTER_CODE)
       nextStep()
     } else if (createNFT.currentTemplate === MessageTemplateType.ENTER_CODE) {
-      setCreateNFT((prev) => ({...prev, enterCode: newChat.text?.replace(/ /g, "_") as string}))
-      setChatList({
+      const enterCode = (newChat.text && newChat.text.replace(/ /g, "_"))
+      console.log(enterCode)
+      setCreateInfo('enterCode', enterCode || "" as string)
+/*      setChatList({
         template: MessageTemplateType.GENERATE_NFT,
       })
-      setCurrentTemplate(MessageTemplateType.GENERATE_NFT)
+      setCurrentTemplate(MessageTemplateType.GENERATE_NFT)*/
+      setChatList({
+        template: MessageTemplateType.END,
+      })
+      setCurrentTemplate(MessageTemplateType.END)
+      nextStep()
+      const creatNFTParams = getCreateNFTParams(enterCode)
+      setNFTList((prev) => ([...prev, creatNFTParams]))
     }
   }
 
   const resetChatList = () => {
     setChatList(null)
     setCreateNFT(null)
+    setLocation({
+      country: '',
+      address: '',
+      range: 0,
+      longitude: 0,
+      latitude: 0,
+    })
   }
 
-  const getCreateNFTParams = () => {
+  const getCreateNFTParams = (enterCode): NFTType => {
+    console.log(createNFT)
     return {
       "name": createNFT.nftTitle,
       "description": createNFT.nftDescription,
@@ -178,9 +205,10 @@ export const useCreateNFT = () => {
       "event_type" : createNFT.selectedEventTemplate,
       "collect_information_type" : createNFT.selectedCollectInformation,
       "creator": account.addr,
-      "enter_code": createNFT.enterCode,
+      "enter_code": createNFT.enterCode || enterCode,
       "number_of_issues": createNFT.numberOfIssue,
       "nft_collection_id" : `${account.addr}_${Date.now()}`,
+      "created_time": Date.now(),
       "collect_information_info" : {
         "description": createNFT.collectInformationDescription,
         "location" : {
@@ -193,8 +221,13 @@ export const useCreateNFT = () => {
     }
   }
 
+  const addNFTList = (creatNFTParams) => {
+    setNFTList(creatNFTParams)
+  }
+
   return {
     chatList,
+    NFTList,
     addChat,
     nextStep,
     setCurrentTemplate,
@@ -204,6 +237,7 @@ export const useCreateNFT = () => {
     getCreateNFTInfo,
     getCreateNFTParams,
     resetChatList,
-    setLocationInfo
+    setLocationInfo,
+    addNFTList
   }
 }

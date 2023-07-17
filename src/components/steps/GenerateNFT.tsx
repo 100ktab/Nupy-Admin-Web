@@ -12,7 +12,7 @@ const GenerateNFT = () => {
 
   const handleClickGenerate = () => {
     setLoading(true)
-    const params = createNFT.getCreateNFTParams()
+    const params = createNFT.getCreateNFTParams("")
     console.log(params)
     mintAll(params)
       .then(_=> {

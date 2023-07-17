@@ -4,6 +4,7 @@ import Link from "next/link";
 
 const EndCreateNFT = () => {
   const createNFT = useCreateNFT()
+  console.log(createNFT.getCreateNFTInfo())
 
   const handleClickCopy = async () => {
     try {

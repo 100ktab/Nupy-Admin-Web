@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <div className="w-full h-[106px] relative bg-white fixed top-0 left-0 right-0">
       <div className="w-full px-[48px] py-[32px] flex border border-zinc-200 justify-between items-center w-max-[1824px]">
-        <Link className="w-[131px] h-[32px] relative" href={'/home'}>
+        <Link className="w-[131px] h-[32px] relative" href={account.isLoggedIn() ? "/home" : "/"}>
           <Image src={'/images/logos/logo.webp'} alt={'nupy'} fill sizes={'100vw'}/>
         </Link>
         <div className="justify-start items-end gap-3 flex">
