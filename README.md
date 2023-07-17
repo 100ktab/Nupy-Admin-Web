@@ -2,8 +2,9 @@
 Nextjs13<br/>
 Express<br/>
 @onflow/fcl<br/>
-tailwindcss
-
+tailwindcss<br/>
+openai(chat gpt)<br/>
+stability(image ai)
 
 ## Getting Started
 1. run the docker database:
