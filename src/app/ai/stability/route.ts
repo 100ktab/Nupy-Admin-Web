@@ -1,7 +1,7 @@
 import {NextResponse} from 'next/server';
 
 export async function POST(request: Request) {
-  const engineId = process.env.STABILITY_MODEL
+  const engineId = 'stable-diffusion-512-v2-1'
   const apiHost = process.env.API_HOST ?? 'https://api.stability.ai'
   const apiKey = process.env.STABILITY_API_KEY
   const params = await request.json()
